@@ -69,10 +69,10 @@ namespace VRStandardAssets.Utils
                 // When Fire1 is released record the position of the mouse.
                 m_MouseUpPosition = new Vector2 (Input.mousePosition.x, Input.mousePosition.y);
 
-                // Detect the direction between the mouse positions when Fire1 is pressed and released.
-                swipe = DetectSwipe ();
+                
             }
-
+            // Detect the direction between the mouse positions when Fire1 is pressed and released.
+                swipe = DetectSwipe ();
             // If there was no swipe this frame from the mouse, check for a keyboard swipe.
             if (swipe == SwipeDirection.NONE)
                 swipe = DetectKeyboardEmulatedSwipe();
@@ -109,7 +109,7 @@ namespace VRStandardAssets.Utils
             }
 
             // If the Cancel button is pressed and there are subscribers to OnCancel call it.
-            if (Input.GetButtonDown("Cancel"))
+            if (Input.GetButtonDown("Fire2"))
             {
                 if (OnCancel != null)
                     OnCancel();
@@ -128,6 +128,18 @@ namespace VRStandardAssets.Utils
             // If the direction of the swipe has a small height it is horizontal.
             bool swipeIsHorizontal = Mathf.Abs(swipeData.y) < m_SwipeWidth;
 
+            if(OVRInput.GetDown(OVRInput.Button.Left,OVRInput.Controller.RTouch)){
+                return SwipeDirection.LEFT;
+            }
+            if(OVRInput.GetDown(OVRInput.Button.Right,OVRInput.Controller.RTouch)){
+                return SwipeDirection.RIGHT;
+            }
+            if(OVRInput.GetDown(OVRInput.Button.Up,OVRInput.Controller.RTouch)){
+                return SwipeDirection.UP;
+            }
+            if(OVRInput.GetDown(OVRInput.Button.Down,OVRInput.Controller.RTouch)){
+                return SwipeDirection.DOWN;
+            }
             // If the swipe has a positive y component and is vertical the swipe is up.
             if (swipeData.y > 0f && swipeIsVertical)
                 return SwipeDirection.UP;

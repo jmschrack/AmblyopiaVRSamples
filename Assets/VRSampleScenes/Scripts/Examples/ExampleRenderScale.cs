@@ -12,7 +12,7 @@ namespace VRStandardAssets.Examples
 
 	    void Start ()
         {
-            VRSettings.renderScale = m_RenderScale;
+            UnityEngine.XR.XRSettings.eyeTextureResolutionScale = m_RenderScale;
 	    }
     }
 }

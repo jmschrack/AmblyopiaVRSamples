@@ -22,6 +22,8 @@ namespace VRStandardAssets.ShootingGallery
         [SerializeField] private AudioClip m_SpawnClip;                 // The audio clip that plays when the target appears.
         [SerializeField] private AudioClip m_MissedClip;                // The audio clip that plays when the target disappears without being hit.
 
+        public Material HighlightMat;
+        Material defaultMat;
 
         private Transform m_CameraTransform;                            // Used to make sure the target is facing the camera.
         private VRInteractiveItem m_InteractiveItem;                    // Used to handle the user clicking whilst looking at the target.
@@ -39,18 +41,30 @@ namespace VRStandardAssets.ShootingGallery
             m_InteractiveItem = GetComponent<VRInteractiveItem>();
             m_Renderer = GetComponent<Renderer>();
             m_Collider = GetComponent<Collider>();
+            defaultMat=m_Renderer.sharedMaterial;
         }
 
-
+        private void OnHover(){
+            m_Renderer.sharedMaterial=HighlightMat;
+        }
+        private void OnLoss(){
+            m_Renderer.sharedMaterial=defaultMat;
+        }
         private void OnEnable ()
         {
+            OnLoss();
             m_InteractiveItem.OnDown += HandleDown;
+            m_InteractiveItem.OnOver+=OnHover;
+            m_InteractiveItem.OnOut+=OnLoss;
         }
 
 
         private void OnDisable ()
         {
             m_InteractiveItem.OnDown -= HandleDown;
+            m_InteractiveItem.OnOver-=OnHover;
+            m_InteractiveItem.OnOut-=OnLoss;
+            OnLoss();
         }
 
 
